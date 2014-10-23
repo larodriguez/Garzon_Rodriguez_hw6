@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int derivada_x (float x, float y, float t);
+
+int main (){ 
+
+  float h = 0.01;
+  float t_min = 0.0;
+  float t_max = 1.0;
+  int A = 20;
+  int B = 1;
+  int C = 30;
+  int D = 1;
+  
+  float n_puntos = ((t_min - t_max)/h);
+
+  float* x;
+  float* y;
+  float* t;
+
+  x = malloc(n_puntos*sizeof(float));
+  y = malloc(n_puntos*sizeof(float));
+  t = malloc(n_puntos*sizeof(float));
+
+  for(i=0;i<n_puntos;i++){
+    x[i] = 0.0;
+    y[i] = 0.0;
+    t[i] = 0.0;
+  }
+
+  
+}
+
+int derivada_x (float x, float y, float t){
+
+  
+
+}
