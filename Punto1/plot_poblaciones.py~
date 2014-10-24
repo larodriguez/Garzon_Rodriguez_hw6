@@ -1,0 +1,10 @@
+#PROGRAMA PARA GENERAR LA GRAFICA X - Y DEL ARCHIVO DE POBLACIONES. DAT
+import pylab
+import math 
+import numpy as np
+import sys 
+import matplotlib as m
+
+#EJECUTA EL PROGRAMA COMO DATA
+
+data = loadtxt("Poblaciones_X0_Y0.dat")
