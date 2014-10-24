@@ -8,7 +8,8 @@ import sys
 import matplotlib.pyplot as plt
 
 #EJECUTA EL PROGRAMA COMO DATA
-data = np.loadtxt("Poblaciones_X0_Y0.dat")
+archivo = sys.argv[1]
+data = np.loadtxt(archivo)
 
 #DEFINE LAS VARIABLES t, x, y
 t = data[:,0]
@@ -23,5 +24,8 @@ plt.xlabel(r'$Eje\ X$', fontsize=20)
 plt.ylabel(r'$Eje\ Y$', fontsize=20)
 plt.grid()
 
+x0 = data[0,1]
+y0 = data[0,2]
+
 #GUARDA LA IMAGEN COMO .PDF
-plt.savefig("Poblaciones_X0_Y0.pdf", format='pdf', bbox_inches='tight', transparent=True)
+plt.savefig("Poblaciones_"+str(x0)+"_"+str(y0)+".pdf", format='pdf', bbox_inches='tight', transparent=True)

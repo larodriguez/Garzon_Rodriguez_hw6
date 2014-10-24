@@ -17,7 +17,7 @@ float derivada_y (float t, float x, float y);
 int main (int argc, char **argv){ 
 
   /*DEFINICION DE LAS VARIABLES*/
-  float h = 1.0E-3;
+  float h = 0.01;
   float t_min = 0.0;
   float t_max = 1.0;
 
@@ -55,7 +55,8 @@ int main (int argc, char **argv){
   float* x;
   float* y;
   float* t;
-
+  
+ 
   /*DEFINIMOS EL TAMAÑO DE LOS PUNTEROS*/
   x = malloc(n_puntos*sizeof(float));
   y = malloc(n_puntos*sizeof(float));
@@ -111,8 +112,11 @@ int main (int argc, char **argv){
     
   }
 
+  char nombrearchivo[100];
+  sprintf(nombrearchivo,"Poblaciones_%.0f_%.0f.dat",x0,y0);
+
   /*GENERAMOS EL ARCHIVO .DAT QUE ALMACENA LOS DATOS*/
-  data = fopen("Poblaciones_X0_Y0.dat", "w"); 
+  data = fopen(nombrearchivo, "w"); 
   
   /*LLENAMOS EL .DAT*/
   for (i=0;i<n_puntos;i++){
@@ -134,6 +138,6 @@ float derivada_x (float t, float x, float y){
 float derivada_y (float t, float x, float y){
 
   float deriy;
-  deriy = -(C*x) + ((D*x)*y);
+  deriy = -(C*y) + ((D*x)*y);
   return deriy;
 }
