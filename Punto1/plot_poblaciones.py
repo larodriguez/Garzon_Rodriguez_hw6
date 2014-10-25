@@ -28,4 +28,4 @@ x0 = data[0,1]
 y0 = data[0,2]
 
 #GUARDA LA IMAGEN COMO .PDF
-plt.savefig("Poblaciones_"+str(x0)+"_"+str(y0)+".pdf", format='pdf', bbox_inches='tight', transparent=True)
+plt.savefig("Poblaciones_"+str(int(x0))+"_"+str(int(y0))+".pdf", format='pdf', bbox_inches='tight', transparent=True)
