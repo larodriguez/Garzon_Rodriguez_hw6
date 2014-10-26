@@ -7,6 +7,8 @@ import numpy as np
 import sys 
 import matplotlib.pyplot as plt
 
+colors = np.random.rand(10)
+
 #EJECUTA EL PROGRAMA COMO DATA
 archivo = sys.argv[1]
 data = np.loadtxt(archivo)
@@ -18,10 +20,10 @@ y = data[:,2]
 
 #GENERA LA GRAFICA DE (X,Y)
 plt.figure(figsize=(15, 10))
-plt.plot (x,y)
-plt.title(r'$Grafica\ de\ X\ y\ Y$', fontsize=20)
-plt.xlabel(r'$Eje\ X$', fontsize=20)
-plt.ylabel(r'$Eje\ Y$', fontsize=20)
+plt.plot (x,y,c=colors)
+plt.title(r'$Grafica\ de\ Presas\ vs\ Cazadores$', fontsize=20)
+plt.xlabel(r'$Presas$', fontsize=20)
+plt.ylabel(r'$Cazadores$', fontsize=20)
 plt.grid()
 
 x0 = data[0,1]
