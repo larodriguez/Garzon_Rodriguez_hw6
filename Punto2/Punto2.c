@@ -5,7 +5,6 @@
 #define pi 3.14159265
 
 int main (int argc, char **argv){
-
     k = atof(argv[1]);  /*Energia cinetica en megaelectronvoltios*/
     alpha = atof(argv[2]);  /*alpha en grados*/
     alpha_rad= (alpha*pi)/180 /*alpha en radianes*/
