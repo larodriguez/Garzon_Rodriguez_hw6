@@ -15,7 +15,7 @@
 
 /*LLAMA LAS FUNCIONES DEFINIDAS*/
 
-float get_a(float rx, float ry, float rz, float vx, float vy, float vz);
+float* get_a(float rx, float ry, float rz, float vx, float vy, float vz);
 
 /*MAIN*/
 int main (int argc, char **argv){
@@ -56,14 +56,9 @@ int main (int argc, char **argv){
   float* r2;
   float* r3;
 
-  a = malloc(3*sizeof(float));
   v = malloc(3*sizeof(float));
   r = malloc(3*sizeof(float));
 
-  a1 = malloc(3*sizeof(float));
-  a2 = malloc(3*sizeof(float));
-  a3 = malloc(3*sizeof(float));
-  a4 = malloc(3*sizeof(float));
   v1 = malloc(3*sizeof(float));
   v2 = malloc(3*sizeof(float));
   v3 = malloc(3*sizeof(float));
@@ -71,23 +66,6 @@ int main (int argc, char **argv){
   r2 = malloc(3*sizeof(float));
   r3 = malloc(3*sizeof(float));
   
-  /*LLENAMOS DE 0.0 TODOS 3 PUNTEROS*/
-  for(i=0;i<3;i++){
-    a[i] = 0.0;
-    v[i] = 0.0;
-    r[i] = 0.0;
-    a1[i] = 0.0;
-    a2[i] = 0.0;
-    a3[i] = 0.0;
-    a4[i] = 0.0;
-    v1[i] = 0.0;
-    v2[i] = 0.0;
-    v3[i] = 0.0;
-    r1[i] = 0.0;
-    r2[i] = 0.0;
-    r3[i] = 0.0;
-  }
-
 
   V= (sqrt(1-(1/(pow((k_jul/(m*pow(c,2))+1),2)))))*c;
 
@@ -106,54 +84,80 @@ int main (int argc, char **argv){
 
   data = fopen(nombrearchivo, "w");
 
-  fprintf(data, "%f %f %f \n", 0.0, r[0], r[1], r[2]);
+  fprintf(data, "%f %f %f %f \n", 0.0, r[0], r[1], r[2]);
 
   /*RESOLVEMOS LAS ECUACIONES ACOPLADAS*/
   
   for(i=1;i<n_puntos;i++){
-
-    a1 = get_a(r[0],r[1],r[2],v[0],v[1],v[2]);
-
-    v1 = v + ((h/2)*a1);
-    r1 = r + ((h/2)*v1);
-    a2 = get_a(r1[0],r1[1],r1[2],v1[0],v1[1],v1[2]);
-
-    v2 = v + ((h/2)*a2);
-    r2 = r + ((h/2)*v2);
-    a3 = get_a(r2[0],r2[1],r2[2],v2[0],v2[1],v2[2]);
-
-    v3 = v + (h*a3);
-    r3 = r + (h*v3);
-    a4 = get_a(r3[0],r3[1],r3[2],v3[0],v3[1],v3[2]);
-
-    a = (1.0/6.0)*(a1 + (2.0*a2) + (2.0*a3) + a4);
-    v = v + (h*a);
-    r = r + (h*v);
+    
+    a1[0] = get_a(r[0],r[1],r[2],v[0],v[1],v[2])[0];
+    a1[1] = get_a(r[0],r[1],r[2],v[0],v[1],v[2])[1];
+    a1[2] = get_a(r[0],r[1],r[2],v[0],v[1],v[2])[2];
+    
+    v1[0] = v[0] + ((h/2)*a1[0]);
+    v1[1] = v[1] + ((h/2)*a1[1]);
+    v1[2] = v[2] + ((h/2)*a1[2]);
+    r1[0] = r[0] + ((h/2)*v1[0]);
+    r1[1] = r[1] + ((h/2)*v1[1]);
+    r1[2] = r[2] + ((h/2)*v1[2]);
+    a2[0] = get_a(r1[0],r1[1],r1[2],v1[0],v1[1],v1[2])[0];
+    a2[1] = get_a(r1[0],r1[1],r1[2],v1[0],v1[1],v1[2])[1];
+    a2[2] = get_a(r1[0],r1[1],r1[2],v1[0],v1[1],v1[2])[2];
+    
+    v2[0] = v[0] + ((h/2)*a2[0]);
+    v2[1] = v[1] + ((h/2)*a2[1]);
+    v2[2] = v[2] + ((h/2)*a2[2]);
+    r2[0] = r[0] + ((h/2)*v2[0]);
+    r2[1] = r[1] + ((h/2)*v2[1]);
+    r2[2] = r[2] + ((h/2)*v2[2]);
+    a3[0] = get_a(r2[0],r2[1],r2[2],v2[0],v2[1],v2[2])[0];
+    a3[1] = get_a(r2[0],r2[1],r2[2],v2[0],v2[1],v2[2])[1];
+    a3[2] = get_a(r2[0],r2[1],r2[2],v2[0],v2[1],v2[2])[2];
+    
+    v3[0] = v[0] + (h*a3[0]);
+    v3[1] = v[1] + (h*a3[1]);
+    v3[2] = v[2] + (h*a3[2]);
+    r3[0] = r[0] + (h*v3[0]);
+    r3[1] = r[1] + (h*v3[1]);
+    r3[2] = r[2] + (h*v3[2]);
+    a4[0] = get_a(r3[0],r3[1],r3[2],v3[0],v3[1],v3[2])[0];
+    a4[1] = get_a(r3[0],r3[1],r3[2],v3[0],v3[1],v3[2])[1];
+    a4[2] = get_a(r3[0],r3[1],r3[2],v3[0],v3[1],v3[2])[2];
+    
+    a[0] = (1.0/6.0)*(a1[0] + (2.0*a2[0]) + (2.0*a3[0]) + a4[0]);
+    a[1] = (1.0/6.0)*(a1[1] + (2.0*a2[1]) + (2.0*a3[1]) + a4[1]);
+    a[2] = (1.0/6.0)*(a1[2] + (2.0*a2[2]) + (2.0*a3[2]) + a4[2]);
+    v[0] = v[0] + (h*a[0]);
+    v[1] = v[1] + (h*a[1]);
+    v[2] = v[2] + (h*a[2]);
+    r[0] = r[0] + (h*v[0]);
+    r[1] = r[1] + (h*v[1]);
+    r[2] = r[2] + (h*v[2]);
     t = i*h;
     
-    if
-    fprintf(data, "%f %f %f \n", t, r[0], r[1], r[2]);
-    
+    if(i%100 == 0){
+      fprintf(data, "%f %f %f %f \n", t, r[0], r[1], r[2]);
+    } 
   }
 
   fclose(data);
   return 0;
-
+  
 }
 
 
-float get_a(float rx, float ry, float rz, float vx, float vy, float vz){
+float* get_a(float rx, float ry, float rz, float vx, float vy, float vz){
   
-  float L = (B0*(Rt^3))/(rr^5);
+  float L = (B0*(pow(Rt,3)))/(pow(rr,5));
   float* a;
   a = malloc(3*sizeof(float));
   
 
-  a[0] = q*((vy*2*L*(rz^2))-(vy*L*(rx^2))-(vy*L*(ry^2))-(vz*L*3*ry*rz));
+  a[0] = q*((vy*2*L*(pow(rz,2)))-(vy*L*(pow(rx,2)))-(vy*L*(pow(ry,2)))-(vz*L*3*ry*rz));
   
-  a[1] = q*(-(vx*L*2*(rz^2))+(vx*L*(rx^2))+(vx*L*(ry^2))+(vz*L*3*rx*rz));
+  a[1] = q*(-(vx*L*2*(pow(rz,2)))+(vx*L*(pow(rx,2)))+(vx*L*(pow(ry,2)))+(vz*L*3*rx*rz));
 
-  a[2] = q*((vx*L*3*y*z)-(vy*L*3*x*z));
+  a[2] = q*((vx*L*3*ry*rz)-(vy*L*3*rx*rz));
 
   return a; 
  
