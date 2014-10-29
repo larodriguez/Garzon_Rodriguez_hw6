@@ -8,9 +8,10 @@
 #define max_t 100.0
 #define B0 3E-5 /*T*/
 #define Rt 6378.1 /*Km*/
-#define r 0.001  /*??????????????*/
+#define rr 0.001  /*??????????????*/
 #define q 10000  /*??????????????*/
-
+#define c 0.001  /*VELOCIDAD DE LA LUZ*/
+#define m 10000  /*MASA ELECTRON*/
 
 /*LLAMA LAS FUNCIONES DEFINIDAS*/
 
@@ -26,6 +27,7 @@ int main (int argc, char **argv){
   float n_puntos = (int)((max_t - min_t)/h);
   int i;
   float t; 
+  float V; 
 
   FILE *data;
   chat nombrearchivo[100];
@@ -86,6 +88,10 @@ int main (int argc, char **argv){
     r3[i] = 0.0;
   }
 
+
+  V= (sqrt(1-(1/(pow((k_jul/(m*pow(c,2))+1),2)))))*c;
+
+
   /*ASIGNAMOS LAS CONDICIONES INICIALES*/
   r[0] = 2*Rt;
   r[1] = 0.0;
@@ -125,6 +131,7 @@ int main (int argc, char **argv){
     r = r + (h*v);
     t = i*h;
     
+    if
     fprintf(data, "%f %f %f \n", t, r[0], r[1], r[2]);
     
   }
@@ -137,16 +144,16 @@ int main (int argc, char **argv){
 
 float get_a(float rx, float ry, float rz, float vx, float vy, float vz){
   
-  float L = (B0*(Rt^3))/(r^5);
+  float L = (B0*(Rt^3))/(rr^5);
   float* a;
   a = malloc(3*sizeof(float));
   
 
-  a[0] = ((vy*2*L*(rz^2))-(vy*L*(rx^2))-(vy*L*(ry^2))-(vz*L*3*ry*rz));
+  a[0] = q*((vy*2*L*(rz^2))-(vy*L*(rx^2))-(vy*L*(ry^2))-(vz*L*3*ry*rz));
   
-  a[1] = (-(vx*L*2*(rz^2))+(vx*L*(rx^2))+(vx*L*(ry^2))+(vz*L*3*rx*rz));
+  a[1] = q*(-(vx*L*2*(rz^2))+(vx*L*(rx^2))+(vx*L*(ry^2))+(vz*L*3*rx*rz));
 
-  a[2] = ((vx*L*3*y*z)-(vy*L*3*x*z));
+  a[2] = q*((vx*L*3*y*z)-(vy*L*3*x*z));
 
   return a; 
  
