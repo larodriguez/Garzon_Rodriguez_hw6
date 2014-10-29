@@ -8,8 +8,8 @@
 #define max_t 100.0
 #define B0 3E-5 /*T*/
 #define Rt 6378.1 /*Km*/
-#define r 0.001
-#define q 10000
+#define r 0.001  /*??????????????*/
+#define q 10000  /*??????????????*/
 
 
 /*LLAMA LAS FUNCIONES DEFINIDAS*/
@@ -36,22 +36,53 @@ int main (int argc, char **argv){
   alpha_rad= (alpha*pi)/180; /*alpha en radianes*/
   k_jul=(1.60217733*(10E-13)*k)/1; /*Energia cinetica en julios*/
 
+  /*FALTA DEFINIR QUE ES V USANDO LA ENERGIA Y LA RELACION CON "Y"*/
+
   float* a;
   float* v;
-  float* vi;
   float* r;
-  
+
+  float* a1;
+  float* a2;
+  float* a3;
+  float* a4;
+  float* v1;
+  float* v2;
+  float* v3;
+  float* r1;
+  float* r2;
+  float* r3;
+
   a = malloc(3*sizeof(float));
   v = malloc(3*sizeof(float));
-  vi= malloc(3*sizeof(float));
   r = malloc(3*sizeof(float));
+
+  a1 = malloc(3*sizeof(float));
+  a2 = malloc(3*sizeof(float));
+  a3 = malloc(3*sizeof(float));
+  a4 = malloc(3*sizeof(float));
+  v1 = malloc(3*sizeof(float));
+  v2 = malloc(3*sizeof(float));
+  v3 = malloc(3*sizeof(float));
+  r1 = malloc(3*sizeof(float));
+  r2 = malloc(3*sizeof(float));
+  r3 = malloc(3*sizeof(float));
   
   /*LLENAMOS DE 0.0 TODOS 3 PUNTEROS*/
   for(i=0;i<3;i++){
     a[i] = 0.0;
     v[i] = 0.0;
-    vi[i] = 0.0;
     r[i] = 0.0;
+    a1[i] = 0.0;
+    a2[i] = 0.0;
+    a3[i] = 0.0;
+    a4[i] = 0.0;
+    v1[i] = 0.0;
+    v2[i] = 0.0;
+    v3[i] = 0.0;
+    r1[i] = 0.0;
+    r2[i] = 0.0;
+    r3[i] = 0.0;
   }
 
   /*ASIGNAMOS LAS CONDICIONES INICIALES*/
@@ -59,40 +90,42 @@ int main (int argc, char **argv){
   r[1] = 0.0;
   r[2] = 0.0;
 
-  vi[0] = 0.0;
-  vi[1] = v*sin(alpha_rad);
-  vi[2] = v*cos(alpha_rad);
+  v[0] = 0.0;
+  v[1] = V*sin(alpha_rad);
+  v[2] = V*cos(alpha_rad);
 
   
   sprintf(nombrearchivo, "trayectoria_%.0f_%.0f.dat",k,alpha);
 
   data = fopen(nombrearchivo, "w");
 
+  fprintf(data, "%f %f %f \n", 0.0, r[0], r[1], r[2]);
+
   /*RESOLVEMOS LAS ECUACIONES ACOPLADAS*/
   
   for(i=1;i<n_puntos;i++){
 
-    a1 = get_a(r[0],r[1],r[2],vi[0],vi[1],vi[2]);
+    a1 = get_a(r[0],r[1],r[2],v[0],v[1],v[2]);
 
-    v1 = vi + ((h/2)*a1);
+    v1 = v + ((h/2)*a1);
     r1 = r + ((h/2)*v1);
     a2 = get_a(r1[0],r1[1],r1[2],v1[0],v1[1],v1[2]);
 
-    v2 = vi + ((h/2)*a2);
+    v2 = v + ((h/2)*a2);
     r2 = r + ((h/2)*v2);
     a3 = get_a(r2[0],r2[1],r2[2],v2[0],v2[1],v2[2]);
 
-    v3 = vi + (h*a3);
+    v3 = v + (h*a3);
     r3 = r + (h*v3);
     a4 = get_a(r3[0],r3[1],r3[2],v3[0],v3[1],v3[2]);
 
     a = (1.0/6.0)*(a1 + (2.0*a2) + (2.0*a3) + a4);
-    v = vi + (h*a);
+    v = v + (h*a);
     r = r + (h*v);
     
-    fprintf(data, "%f %f %f \n", tiempo, r[0], r[1], r[2]);
+    fprintf(data, "%f %f %f \n", i/n_puntos, r[0], r[1], r[2]);
 
-    /* COMO ACTUALIZO VI ?????? */
+    /* COMO PONGO EL TIEMPO ?????? */
     
   }
 
@@ -118,138 +151,4 @@ float get_a(float rx, float ry, float rz, float vx, float vy, float vz){
   return a; 
  
 }
-
-
-/*
-
-float func_prime_1_x(t, x_1, x_2);
-float func_prime_2_x(t, x_1, x_2);
-float func_prime_1_y(t, y_1, y_2);
-float func_prime_2_y(t, y_1, y_2);
-float func_prime_1_z(t, z_1, y_2);
-float func_prime_2_z(t, z_1, z_2);
-float RungekuttaX(t_old, x_1_old, x_2_old);
-float RungekuttaY(t_old, y_1_old, y_2_old);
-float RungekuttaZ(t_old, z_1_old, z_2_old);
-
-float func_prime_1_x(t, x_1, x_2){
-  return x_2;
-}
-
-floa
-t func_prime_2_x(t, x_1, x_2){
-
-}
-
-float func_prime_1_y(t, y_1, y_2){
-  return y_2;
-}
-
-float func_prime_2_y(t, y_1, y_2){
-
-}
-
-float func_prime_1_z(t, z_1, z_2){
-  return z_2;
-}
-
-float func_prime_2_z(t, z_1, z_2){
-
-}
-
-float RungekuttaX(t_old, x_1_old, x_2_old){
-
-  float x_prime_1;
-  float x_prime_2;
-  float t_middle;
-  float x_1_middle;
-  float x_2_middle;
-  float t_new;
-  float x_1_new;
-  float x_2_new;
-  
-
-  x_prime_1 = func_prime_1_x(t_old, x_1_old, x_2_old);
-  x_prime_2 = func_prime_2_x(t_old, x_1_old, x_2_old);
-  
-
-  t_middle = t_old + (h/2.0);
-  x_1_middle = x_1_old + (h/2.0) * x_prime_1;
-  x_2_middle = x_2_old + (h/2.0) * x_prime_2;
-  
-  
-  x_middle_prime_1 = func_prime_1_x(t_middle, x_1_middle, x_2_middle);
-  x_middle_prime_2 = func_prime_2_x(t_middle, x_1_middle, x_2_middle);
-  
-  t_new = t_old + h;
-  x_1_new = (x_1_old + h) * x_middle_prime_1;
-  x_2_new = (x_2_old + h) * x_middle_prime_2;
-  return t_new, y_1_new, y_2_new;
-
-}
-
-float RungekuttaY(t_old, y_1_old, y_2_old){
-
-  float y_prime_1;
-  float y_prime_2;
-  float t_middle;
-  float y_1_middle;
-  float y_2_middle;
-  float t_new;
-  float y_1_new;
-  float y_2_new;
-  
-
-  y_prime_1 = func_prime_1_y(t_old,y_1_old, y_2_old);
-  y_prime_2 = func_prime_2_y(t_old,y_1_old, y_2_old);
-  
-
-  t_middle = t_old + (h/2.0);
-  y_1_middle = y_1_old + (h/2.0) * y_prime_1;
-  y_2_middle = y_2_old + (h/2.0) * y_prime_2;
-  
-  
-  y_middle_prime_1 = func_prime_1_y(t_middle, y_1_middle, y_2_middle);
-  y_middle_prime_2 = func_prime_2_y(t_middle, y_1_middle, y_2_middle);
-  
-  t_new = t_old + h;
-  y_1_new = (y_1_old + h) * y_middle_prime_1;
-  y_2_new = (y_2_old + h) * y_middle_prime_2;
-  return t_new, y_1_new, y_2_new;
-
-}
-
-float RungekuttaZ(t_old, z_1_old, z_2_old){
-
-  float z_prime_1;
-  float z_prime_2;
-  float t_middle;
-  float z_1_middle;
-  float z_2_middle;
-  float t_new;
-  float z_1_new;
-  float z_2_new;
-  
-
-  z_prime_1 = func_prime_1_z(t_old,z_1_old, z_2_old);
-  z_prime_2 = func_prime_2_z(t_old,z_1_old, z_2_old);
-  
-
-  t_middle = t_old + (h/2.0);
-  z_1_middle = z_1_old + (h/2.0) * z_prime_1;
-  z_2_middle = z_2_old + (h/2.0) * z_prime_2;
-  
-  
-  z_middle_prime_1 = func_prime_1_z(t_middle, z_1_middle, z_2_middle);
-  z_middle_prime_2 = func_prime_2_z(t_middle, z_1_middle, z_2_middle);
-  
-  t_new = t_old + h;
-  z_1_new = (z_1_old + h) * z_middle_prime_1;
-  z_2_new = (z_2_old + h) * z_middle_prime_2;
-  return t_new, z_1_new, z_2_new;
-
-}
-
-*/
-
 
