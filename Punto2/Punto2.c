@@ -25,6 +25,7 @@ int main (int argc, char **argv){
   float alpha_rad;
   float n_puntos = (int)((max_t - min_t)/h);
   int i;
+  float t; 
 
   FILE *data;
   chat nombrearchivo[100];
@@ -122,10 +123,9 @@ int main (int argc, char **argv){
     a = (1.0/6.0)*(a1 + (2.0*a2) + (2.0*a3) + a4);
     v = v + (h*a);
     r = r + (h*v);
+    t = i*h;
     
-    fprintf(data, "%f %f %f \n", i/n_puntos, r[0], r[1], r[2]);
-
-    /* COMO PONGO EL TIEMPO ?????? */
+    fprintf(data, "%f %f %f \n", t, r[0], r[1], r[2]);
     
   }
 
