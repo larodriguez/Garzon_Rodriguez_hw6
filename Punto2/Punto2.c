@@ -30,7 +30,7 @@ int main (int argc, char **argv){
   float V; 
 
   FILE *data;
-  chat nombrearchivo[100];
+  char nombrearchivo[100];
   
   /*RECIBIMOS POR PARAMETRO (k, alpha) Y LOS TRANSFORMAMOS A LAS UNIDADES NECESARIAS*/
 
