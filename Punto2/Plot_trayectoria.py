@@ -16,7 +16,7 @@ z = data[:,2]
 
 #Genera la grafica de (x,y)
 plt.figure(figsize=(15, 10))
-plt.plot (x,y)
+plt.plot (y,z)
 plt.title(r'$Posicion\ X \ vs \ Y$', fontsize=20)
 plt.xlabel(r'$Eje\ X$',fontsize=20)
 plt.ylabel(r'$Eje\ X$',fontsize=20)
