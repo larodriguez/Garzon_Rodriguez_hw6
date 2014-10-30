@@ -3,16 +3,15 @@
 #include <stdlib.h>
 #include <math.h>
 #define pi 3.14159265
-#define h 1E-4
+#define h 1E-5
 #define min_t 0.0
 #define max_t 100.0
 
-#define B0 3E-5 /*T*/
-#define Rt 63781000 /*m*/
-#define rr 500000 /*??????????????*/
-#define q 1.602E-19 /*carga Proton*/
-#define c 3E8  /*VELOCIDAD DE LA LUZ*/
-#define m 1.67E-27  /*MASA PROTON*/
+#define B0 3E-5 /*[T]*/
+#define Rt 63781000 /*[m]*/
+#define q 1.602E-19 /*carga Proton[C]*/
+#define c 3E8  /*VELOCIDAD DE LA LUZ [m/s]*/
+#define m 1.67E-27  /*MASA PROTON [Kg]*/
 
 /*LLAMA LAS FUNCIONES DEFINIDAS*/
 
@@ -73,8 +72,11 @@ int main (int argc, char **argv){
   r3 = malloc(3*sizeof(float));
   
 
-  V= (sqrt(1-(1/(pow((k_jul/(m*pow(c,2))+1),2)))))*c;
-
+  float VV1 = (k_jul/(m*(pow(c,2))))+1;
+  float VV2 = 1 - (1/(pow(VV1,2)));
+  
+  V = (sqrt(VV2))*c;
+  
 
   /*ASIGNAMOS LAS CONDICIONES INICIALES*/
   r[0] = 2*Rt;
@@ -143,11 +145,11 @@ int main (int argc, char **argv){
     r[2] = r[2] + (h*v[2]);
     t = i*h;
     
-    if(i%100 == 0){
+    if(i%1000 == 0){
       fprintf(data, "%f %f %f %f \n", t, r[0], r[1], r[2]);
-    } 
+    }
   }
-
+  
   fclose(data);
   return 0;
   
@@ -155,8 +157,11 @@ int main (int argc, char **argv){
 
 
 void  get_a(float rx, float ry, float rz, float vx, float vy, float vz,float* a){
+
+  float rr = sqrt((pow(rx,2))+(pow(ry,2))+(pow(rz,2)));
   
   float L = (B0*(pow(Rt,3)))/(pow(rr,5));
+  
 
   a[0] = q*((vy*2*L*(pow(rz,2)))-(vy*L*(pow(rx,2)))-(vy*L*(pow(ry,2)))-(vz*L*3*ry*rz));
   
