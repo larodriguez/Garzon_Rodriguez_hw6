@@ -7,9 +7,11 @@ import numpy as np
 import sys
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import re
 
 archivo = sys.argv[1]
 data = np.loadtxt(archivo)
+con_iniciales = re.findall("\d+",archivo)
 
 t = data[:,0]
 x = data[:,1]
@@ -23,7 +25,7 @@ plt.title(r'$Posicion\ X \ vs \ Y$', fontsize=20)
 plt.xlabel(r'$Eje\ X$',fontsize=20)
 plt.ylabel(r'$Eje\ y$',fontsize=20)
 plt.grid()
-plt.savefig("Plot_XvsY.pdf", format='pdf', bbox_inches='tight', transparent=True)
+plt.savefig("Plot_XvsY_K_"+str().pdf", format='pdf', bbox_inches='tight', transparent=True)
 
 #Genera la grafica en 3D
 
