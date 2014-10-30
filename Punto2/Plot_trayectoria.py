@@ -16,10 +16,10 @@ z = data[:,2]
 
 #Genera la grafica de (x,y)
 plt.figure(figsize=(15, 10))
-plt.plot (x,y,c=colors)
-plt.title(r'$Posicion\ X\n vs\n Y$', fontsize=20)
-plot.xlabel(r'$Eje\ X$',fontsize=20)
-plot.ylabel(r'$Eje\ X$',fontsize=20)
+plt.plot (x,y)
+plt.title(r'$Posicion\ X \ vs \ Y$', fontsize=20)
+plt.xlabel(r'$Eje\ X$',fontsize=20)
+plt.ylabel(r'$Eje\ X$',fontsize=20)
 plt.grid()
 plt.savefig("Plot_XvsY.pdf", format='pdf', bbox_inches='tight', transparent=True)
 
