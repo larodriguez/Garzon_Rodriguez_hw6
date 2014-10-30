@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #define pi 3.14159265
-#define h 1E-2
+#define h 1E-4
 #define min_t 0.0
 #define max_t 100.0
 
