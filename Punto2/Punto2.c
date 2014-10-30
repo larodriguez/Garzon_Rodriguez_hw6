@@ -3,15 +3,16 @@
 #include <stdlib.h>
 #include <math.h>
 #define pi 3.14159265
-#define h 0.01
+#define h 1E-2
 #define min_t 0.0
 #define max_t 100.0
+
 #define B0 3E-5 /*T*/
-#define Rt 6378.1 /*Km*/
-#define rr 0.001  /*??????????????*/
-#define q 10000  /*??????????????*/
-#define c 0.001  /*VELOCIDAD DE LA LUZ*/
-#define m 10000  /*MASA ELECTRON*/
+#define Rt 63781000 /*m*/
+#define rr 9E7 /*??????????????*/
+#define q 1.602E-19 /*carga Proton*/
+#define c 3E8  /*VELOCIDAD DE LA LUZ*/
+#define m 1.67E-27  /*MASA PROTON*/
 
 /*LLAMA LAS FUNCIONES DEFINIDAS*/
 
