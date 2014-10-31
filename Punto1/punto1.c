@@ -83,26 +83,29 @@ int main (int argc, char **argv){
     
     k1 = derivada_x(t[i-1],x[i-1],y[i-1]);
     u1 = derivada_y(t[i-1],x[i-1],y[i-1]);
+
     /* Primer paso*/
     t1 = t[i-1] + (h/2.0);
     x1 = x[i-1] + ((h/2.0)*k1);
     y1 = y[i-1] + ((h/2.0)*u1);
     k2 = derivada_x(t1, x1, y1);
     u2 = derivada_y(t1, x1, y1);
+
     /*Segundo paso*/
     t2 = t[i-1] + (h/2.0);
     x2 = x[i-1] + ((h/2.0)*k2);
     y2 = y[i-1] + ((h/2.0)*u2);
     k3 = derivada_x(t2, x2, y2);
     u3 = derivada_y(t2, x2, y2);
+
     /*Tercer paso*/    
     t3 = t[i-1] + h;
     x3 = x[i-1] + (h*k3);
     y3 = y[i-1] + (h*u3);
     k4 = derivada_x(t3, x3, y3);
     u4 = derivada_y(t3, x3, y3);
-    /*Cuarto paso*/
-   
+
+    /*Cuarto paso*/   
     average_k = (1.0/6.0)*(k1 + (2.0*k2) + (2.0*k3) + k4);
     average_u = (1.0/6.0)*(u1 + (2.0*u2) + (2.0*u3) + u4);
     

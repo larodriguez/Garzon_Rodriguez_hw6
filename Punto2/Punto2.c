@@ -1,4 +1,10 @@
 /*SEBASTIAN GARZON - ALEJANDRO RODRIGUEZ*/
+
+/*ESTE PROGRAMA REALIZA LA INTEGRACION DE LAS ECUACIONES DE MOVIEMIENTO RELATIVISTA DE PROTONES QUE TIENEN UNA 
+POSICION INICIAL (2Rt,0,0) Y VELOCIDAD INICIAL (0,Vsin(alpha),Vsin(alpha)), EL PROGRAMA RECIBE POR PARAMETRO
+LA ENERGIA CINETICA DEL SISTEMA, LA CUAL ESTA MEDIDA EN MEGAELECTRONVOLTS Y EL ANGULO alpha QUE ES EL 
+PITCH ANGLE DEL SISTEMA*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -8,13 +14,12 @@
 #define max_t 100.0
 
 #define B0 3E-5 /*[T]*/
-#define Rt 63781000 /*[m]*/
-#define q 1.602E-19 /*carga Proton[C]*/
+#define Rt 63781000 /*RADIO DE LA TIERRA [m]*/
+#define q 1.602E-19 /*CARGA PROTON [C]*/
 #define c 3E8  /*VELOCIDAD DE LA LUZ [m/s]*/
 #define m 1.67E-27  /*MASA PROTON [Kg]*/
 
 /*LLAMA LAS FUNCIONES DEFINIDAS*/
-
 void get_a(float rx, float ry, float rz, float vx, float vy, float vz,float* a, float V);
 
 /*MAIN*/
@@ -39,8 +44,7 @@ int main (int argc, char **argv){
   alpha_rad= (alpha*pi)/180; /*alpha en radianes*/
   k_jul=(1.60217733*(10E-13)*k)/1; /*Energia cinetica en julios*/
 
-  /*FALTA DEFINIR QUE ES V USANDO LA ENERGIA Y LA RELACION CON "Y"*/
-
+  /*DEFINIMOS LOS PUNTEROS DE TAMAÑO 3*/
   float* a;
   float* v;
   float* r;
@@ -71,7 +75,7 @@ int main (int argc, char **argv){
   r2 = malloc(3*sizeof(float));
   r3 = malloc(3*sizeof(float));
   
-
+  /*DEFINIMOS V A PARTIR DE LA RELACION CON gamma Y la energia cinetica*/
   float VV1 = (k_jul/(m*(pow(c,2))))+1;
   float VV2 = 1 - (1/(pow(VV1,2)));
   
@@ -87,18 +91,18 @@ int main (int argc, char **argv){
   v[1] = V*sin(alpha_rad);
   v[2] = V*cos(alpha_rad);
 
-  
+  /*IMPRIMIMOS LAS CONDICIONES INICIALES EN EL ARCHIVO .DAT*/
   sprintf(nombrearchivo, "trayectoria_%.0f_%.0f.dat",k,alpha);
 
   data = fopen(nombrearchivo, "w");
 
   fprintf(data, "%f %f %f %f \n", 0.0, r[0], r[1], r[2]);
 
-  /*RESOLVEMOS LAS ECUACIONES ACOPLADAS*/
-  
+  /*RESOLVEMOS LAS ECUACIONES ACOPLADAS POR MEDIO DE UN RUNGE-KUTTA DE CUARTO ORDEN
+   PARA CADA PASO DE i EL PROGRAMA IMPRIME EL RESULTADO DE (x,y,z) PERO COMO SON MUCHOS
+  DATOS, SELECIONAMOS QUE UNICAMENTE LO REALICE PARA LOS i QUE SON MULTIPLOS DE 1000*/
   for(i=1;i<n_puntos;i++){
     
-
     /*Primer paso*/
     get_a(r[0],r[1],r[2],v[0],v[1],v[2],a1,V);
 
@@ -121,7 +125,6 @@ int main (int argc, char **argv){
     r2[2] = r[2] + ((h/2)*v2[2]);
 
     /*Tercer paso*/
-    
     get_a(r2[0],r2[1],r2[2],v2[0],v2[1],v2[2],a3,V);
     
     v3[0] = v[0] + (h*a3[0]);
@@ -155,7 +158,9 @@ int main (int argc, char **argv){
   
 }
 
-
+/*DEFINIMOS LA FUNCION get_a QUE REALIZA LA ACTUALIZACION DEL PUNTERO DE LA ACELERACION, 
+ESTO SE REALIZA POR MEDIO DE LA RESOLUCION DEL PRODUCTO CRUZ QUE SE ENCUENTRA EN UNA DE LAS
+ECUACIONES ACOPLADAS*/
 void  get_a(float rx, float ry, float rz, float vx, float vy, float vz,float* a, float V){
 
   float rr = sqrt((pow(rx,2))+(pow(ry,2))+(pow(rz,2)));
