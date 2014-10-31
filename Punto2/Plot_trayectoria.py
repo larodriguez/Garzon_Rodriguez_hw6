@@ -21,23 +21,22 @@ z = data[:,3]
 #Genera la grafica de (x,y)
 plt.figure(figsize=(15, 10))
 plt.plot (x,y)
-plt.title(r'$Posicion\ X \ vs \ Y$', fontsize=20)
+plt.title(r'$Posicion\ X \ vs \ Y\ Condiciones\ Iniciales \  \alpha ='+str(con_iniciales[1])+'\ K=\ '+str(con_iniciales[0])+'\ MeV $', fontsize=20)
 plt.xlabel(r'$Eje\ X$',fontsize=20)
 plt.ylabel(r'$Eje\ y$',fontsize=20)
 plt.grid()
-plt.savefig("Plot_XvsY_K_"+str().pdf", format='pdf', bbox_inches='tight', transparent=True)
+plt.savefig("Plot_XvsY_K_"+str(con_iniciales[0])+"_alpha_"+str(con_iniciales[1])+".pdf", format='pdf', bbox_inches='tight', transparent=True)
 
 #Genera la grafica en 3D
 
 fig = plt.figure()
 ax = fig.gca(projection='3d')
-ax.plot(x, y, z, label='Trayectoria')
-plt.title(r'$Trayectoria$', fontsize=20)
+ax.plot(x, y, z, color='r')
+plt.title(r'$Trayectoria\ proton\  Condiciones\ Iniciales \  \alpha ='+str(con_iniciales[1])+'\ K=\ '+str(con_iniciales[0])+'\ MeV $', fontsize=20)
 plt.xlabel(r'$Eje\ X$',fontsize=10)
 plt.ylabel(r'$Eje\ y$',fontsize=10)
-ax.legend()
 plt.grid()
-plt.savefig("Trayectoria_3D.pdf", format='pdf', bbox_inches='tight', transparent=True)
+plt.savefig("Trayectoria_3D_K_"+str(con_iniciales[0])+"_alpha_"+str(con_iniciales[1])+".pdf", format='pdf', bbox_inches='tight', transparent=True)
 
 
 
